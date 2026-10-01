@@ -1,0 +1,8 @@
+{
+  "name": "optimize-images-skill",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.34.0"
+  }
+}
