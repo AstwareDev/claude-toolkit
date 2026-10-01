@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-  <img src="media/claude1.png#gh-dark-mode-only" width="48" height="48" align="middle" alt="Claude Toolkit logo"> Claude Toolkit
+  <img src="media/claude1.png#gh-dark-mode-only" width="48" height="48" align="top" alt="Claude Toolkit logo"> Claude Toolkit
 </h1>
 
 My personal skill stack for Claude — small, reusable skills built from tasks I kept repeating in chat, so I stop re-explaining the same workflow every time.
