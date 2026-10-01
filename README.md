@@ -1,9 +1,5 @@
-<p align="center">
-  <img src="media/claude2.png#gh-light-mode-only" width="560" alt="Claude Toolkit">
-</p>
-
 <h1 align="center">
-  <img src="media/claude1.png#gh-dark-mode-only" width="48" height="48" align="top" alt="Claude Toolkit logo"> Claude Toolkit
+  <img src="media/claude1.png" width="48" height="48" align="top" alt="Claude Toolkit logo"> Claude Toolkit
 </h1>
 
 My personal skill stack for Claude — small, reusable skills built from tasks I kept repeating in chat, so I stop re-explaining the same workflow every time.
@@ -46,3 +42,7 @@ package-skills.ps1     skill → .skill packer
 
 - Skills are chat-first: `svg-optimize` and `favicon-generator` expect files dropped in chat and deliver to outputs with original filenames preserved.
 - `optimize-images` bundles its own `sharp` via its `package.json` — it never adds a dependency to the target project.
+
+<h1 align="center">
+  <img src="media/claude3.png" width="80" height="80" align="top" alt="Claude Toolkit logo"> Make sure to star this repo =D
+</h1>
