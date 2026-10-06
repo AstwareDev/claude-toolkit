@@ -16,9 +16,12 @@ Drop an SVG in chat and get a smaller one back that still looks identical.
 
 ![svg-optimize demo](media/svg-optimize-demo.png)
 
-- Runs SVGO in multipass mode, strips metadata and comments, keeps the `viewBox`
-- Renders the result and compares it to the original before delivering
-- Honest about size targets. If a target can't be hit without hurting the design, it says so
+- Runs SVGO in multipass mode and strips metadata, comments, XML declarations, and unused namespaces
+- Rounds coordinates to 2 decimals, merges adjacent paths, and keeps the `viewBox`
+- Renders the result next to the original to confirm nothing shifted before delivering
+- Reports exact before and after bytes for every file
+- Honest about size targets. If one can't be hit without hurting the design, it says why and lets you decide whether to go lossy
+- Your filenames stay as they are
 
 ---
 
@@ -30,20 +33,27 @@ One logo in, a complete icon set out.
 
 - Accepts SVG, PNG, JPG, or WebP
 - Outputs a multi-resolution `favicon.ico`, PNGs from 16 to 512, an Apple touch icon, and Android Chrome icons
+- Pads non-square logos instead of stretching them
+- Flattens the Apple icon onto white, since iOS renders transparency as black
+- Supports an optional solid background color
+- Checks the output visually and warns you when a low-res source will look soft at large sizes
 - Includes the ready-to-paste `<head>` snippet
 
 ---
 
 ### `/optimize-images`
 
-Point it at a project and it shrinks every raster image without visible quality loss.
+Point it at a project and it shrinks every raster image without visible quality loss, then wires up smooth loading.
 
 ![optimize-images demo](media/optimize-images-demo.png)
 
-- Converts to WebP and rewrites the references in your code
-- Skips SVGs, animated GIFs, existing WebP and AVIF, and anything that wouldn't get smaller
-- Generates tiny base64 blur placeholders for smooth blur-up loading
-- Works with Next.js, React, Vue, Svelte, and plain static HTML
+- Converts PNG, JPEG, BMP, and TIFF to WebP (quality 82, capped at 2000px) and rewrites the references in your code
+- Detects the real format from file contents, so mislabeled files don't break the run
+- Leaves alone anything under 80 KB, SVGs, animated GIFs, existing WebP and AVIF, and conversions that wouldn't get smaller
+- Generates tiny base64 blur placeholders and wires blur-up loading into your image components
+- Uses the native blur on Next.js `Image` and a layered cross-fade everywhere else
+- Checks for a clean git tree first and reports total savings when done
+- Works with Next.js, React, Vue, Svelte, Astro, and plain static HTML
 
 ---
 
