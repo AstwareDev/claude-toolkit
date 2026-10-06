@@ -20,8 +20,6 @@ Drop an SVG in chat and get a smaller one back that still looks identical.
 - Renders the result and compares it to the original before delivering
 - Honest about size targets. If a target can't be hit without hurting the design, it says so
 
-> "Optimize this SVG" or "get this under 5 KB"
-
 ---
 
 ### `/favicon-generator`
@@ -33,8 +31,6 @@ One logo in, a complete icon set out.
 - Accepts SVG, PNG, JPG, or WebP
 - Outputs a multi-resolution `favicon.ico`, PNGs from 16 to 512, an Apple touch icon, and Android Chrome icons
 - Includes the ready-to-paste `<head>` snippet
-
-> "Make a favicon from this logo"
 
 ---
 
@@ -48,8 +44,6 @@ Point it at a project and it shrinks every raster image without visible quality 
 - Skips SVGs, animated GIFs, existing WebP and AVIF, and anything that wouldn't get smaller
 - Generates tiny base64 blur placeholders for smooth blur-up loading
 - Works with Next.js, React, Vue, Svelte, and plain static HTML
-
-> "Compress the images in this project and add blur-up loading"
 
 ---
 
@@ -83,5 +77,5 @@ package-skills.ps1
 - `/optimize-images` bundles its own `sharp`, so it never adds a dependency to your project
 
 <h1 align="center">
-  <img src="media/claude3.png" width="80" height="80" align="top" alt="Claude Toolkit logo"> Make sure to star this repo =D
+  <img src="media/claude3.png" width="80" height="80" align="top" alt="Claude Toolkit logo"> Make sure to star this repo =)
 </h1>
