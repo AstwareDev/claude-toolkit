@@ -2,50 +2,105 @@
   <img src="media/claude1.png" width="48" height="48" align="top" alt="Claude Toolkit logo"> Claude Toolkit
 </h1>
 
-My personal skill stack for Claude — small, reusable skills built from tasks I kept repeating in chat, so I stop re-explaining the same workflow every time.
+<p align="center">
+  My personal skill stack for Claude. Small, reusable skills built from tasks I kept repeating in chat, so I never have to re-explain the same workflow twice.
+</p>
 
-Each skill lives in `skills/<name>/` with a `SKILL.md` and, where needed, bundled scripts. Pack them into upload-ready `.skill` files and upload to Claude when needed.
+---
 
 ## Skills
 
-| Skill | What it does | When to use it |
-|---|---|---|
-| `skills/svg-optimize/` | Shrinks SVGs with SVGO (multipass, strips metadata/comments, keeps `viewBox`, 2-decimal precision) and render-verifies the result against the original before delivering. Honest about byte targets — says when a target can't be hit without hurting the design. | Drop an `.svg` in chat and ask to optimize, minify, compress, or hit a size target. |
-| `skills/favicon-generator/` | Turns one logo (SVG, PNG, JPG, WebP) into a web-ready icon set: multi-resolution `favicon.ico`, PNGs 16–512, `apple-touch-icon-180x180.png`, `android-chrome` 192/512, plus the `<head>` snippet. | Drop a logo in chat and ask for a favicon, site icon, or app icons. |
-| `skills/optimize-images/` | Scans a project for raster images, re-encodes them to WebP without visible quality loss (skips SVGs, animated GIFs, existing WebP/AVIF, and files where the result isn't smaller), rewrites references, and generates tiny base64 blur placeholders for smooth blur-up loading. Framework-agnostic (Next.js, React, Vue, Svelte, static HTML). | Ask to optimize/compress project images or add blur-up loading. |
-| `skills/copybook-summary/` | Turns textbook chapter pages (screenshots or PDF) into a short, copy-by-hand summary doc: bold key terms to highlight, short lines and symbols, tables for comparisons, drawn diagrams for graphs and flows, worked examples for calculations, and one vocabulary table at the end. Uses the textbook's own numbers and flags anything added. | Send textbook pages and ask for exam revision notes or a copybook summary. |
+### `/svg-optimize`
 
-## Packing `.skill` files
+Drop an SVG in chat and get a smaller one back that still looks identical.
 
-A `.skill` file is a ZIP containing the skill folder — it's what Claude accepts on upload.
+![svg-optimize demo](media/svg-optimize-demo.png)
+
+- Runs SVGO in multipass mode and strips metadata, comments, XML declarations, and unused namespaces
+- Rounds coordinates to 2 decimals, merges adjacent paths, and keeps the `viewBox`
+- Renders the result next to the original to confirm nothing shifted before delivering
+- Reports exact before and after bytes for every file
+- Honest about size targets. If one can't be hit without hurting the design, it says why and lets you decide whether to go lossy
+- Your filenames stay as they are
+
+---
+
+### `/favicon-generator`
+
+One logo in, a complete icon set out.
+
+![favicon-generator demo](media/favicon-generator-demo.png)
+
+- Accepts SVG, PNG, JPG, or WebP
+- Outputs a multi-resolution `favicon.ico`, PNGs from 16 to 512, an Apple touch icon, and Android Chrome icons
+- Pads non-square logos instead of stretching them
+- Flattens the Apple icon onto white, since iOS renders transparency as black
+- Supports an optional solid background color
+- Checks the output visually and warns you when a low-res source will look soft at large sizes
+- Includes the ready-to-paste `<head>` snippet
+
+---
+
+### `/optimize-images`
+
+Point it at a project and it shrinks every raster image without visible quality loss, then wires up smooth loading.
+
+![optimize-images demo](media/optimize-images-demo.png)
+
+- Converts PNG, JPEG, BMP, and TIFF to WebP (quality 82, capped at 2000px) and rewrites the references in your code
+- Detects the real format from file contents, so mislabeled files don't break the run
+- Leaves alone anything under 80 KB, SVGs, animated GIFs, existing WebP and AVIF, and conversions that wouldn't get smaller
+- Generates tiny base64 blur placeholders and wires blur-up loading into your image components
+- Uses the native blur on Next.js `Image` and a layered cross-fade everywhere else
+- Checks for a clean git tree first and reports total savings when done
+- Works with Next.js, React, Vue, Svelte, Astro, and plain static HTML
+
+---
+
+### `/copybook-summary`
+
+Send textbook pages and get a short summary doc you can copy straight into a copybook.
+
+- Accepts chapter pages as screenshots or a PDF
+- Bold marks the key terms and definitions, so you can highlight exactly those words
+- Keeps lines short, uses arrows and equals signs to save writing, and defines abbreviations once at the top
+- Uses tables for comparisons, drawn diagrams for graphs and flows, and step-by-step worked examples for calculations
+- Sticks to the textbook's own numbers and examples, and flags anything it added
+- Ends with a diagram checklist and a single vocabulary table covering every key term
+
+---
+
+## Install
+
+Each skill is a folder with a `SKILL.md` and, where needed, its scripts. To use one, pack it and upload it to Claude.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File package-skills.ps1
 ```
 
-This packages every skill with a `SKILL.md` into `dist/<name>.skill`. Re-run it after any skill change. `node_modules`, `.git`, and caches are excluded automatically.
+This builds an upload-ready `.skill` file for every skill into `dist`. Re-run it after any change.
 
-To use one: Claude → Skills → Create skill → Upload, then select the `.skill` file.
+Then in Claude, go to **Skills**, choose **Create skill**, and upload the file.
 
-## Repo layout
+## Project structure
 
 ```
-skills/
-  svg-optimize/        SKILL.md + scripts/optimize.sh + scripts/svgo.config.js
-  favicon-generator/   SKILL.md + scripts/generate_favicons.py
-  optimize-images/     SKILL.md + scripts/optimize-images.mjs + package.json
-  copybook-summary/    SKILL.md (instructions only, no scripts)
-media/                 header/icon artwork
-dist/                  built .skill files (generated, re-build with the script above)
-package-skills.ps1     skill → .skill packer
+skills
+  svg-optimize
+  favicon-generator
+  optimize-images
+  copybook-summary
+media
+dist
+package-skills.ps1
 ```
 
-## Notes
+## Good to know
 
-- Skills are chat-first: `svg-optimize` and `favicon-generator` expect files dropped in chat and deliver to outputs with original filenames preserved.
-- `optimize-images` bundles its own `sharp` via its `package.json` — it never adds a dependency to the target project.
-- `copybook-summary` is instruction-only: it relies on Claude's doc editor and diagram widgets rather than scripts, so there is nothing to install.
+- `/svg-optimize` and `/favicon-generator` expect files dropped in chat and keep your original filenames on delivery
+- `/optimize-images` bundles its own `sharp`, so it never adds a dependency to your project
+- `/copybook-summary` is instruction-only, with no scripts to install
 
 <h1 align="center">
-  <img src="media/claude3.png" width="80" height="80" align="top" alt="Claude Toolkit logo"> Make sure to star this repo =D
+  <img src="media/claude3.png" width="80" height="80" align="top" alt="Claude Toolkit logo"> Make sure to star this repo =)
 </h1>
