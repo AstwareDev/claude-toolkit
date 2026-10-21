@@ -61,20 +61,8 @@ Point it at a project and it shrinks every raster image without visible quality 
 
 Send textbook pages and get a short summary doc you can copy straight into a copybook.
 
-<table align="center">
-  <tr>
-    <th align="center">Prompt</th>
-    <th align="center">Result</th>
-  </tr>
-  <tr>
-    <td align="center" valign="top" width="50%">
-      <img src="media/copybook-summary-demo-1.png" alt="copybook-summary demo: the prompt and textbook pages">
-    </td>
-    <td align="center" valign="top" width="50%">
-      <img src="media/copybook-summary-demo-2.png" alt="copybook-summary demo: the generated summary doc">
-    </td>
-  </tr>
-</table>
+
+![copybook summary prompt demo](media/copybook-summary-demo-1.png)
 
 - Accepts chapter pages as screenshots or a PDF
 - Bold marks the key terms and definitions, so you can highlight exactly those words
@@ -82,6 +70,8 @@ Send textbook pages and get a short summary doc you can copy straight into a cop
 - Uses tables for comparisons, drawn diagrams for graphs and flows, and step-by-step worked examples for calculations
 - Sticks to the textbook's own numbers and examples, and flags anything it added
 - Ends with a diagram checklist and a single vocabulary table covering every key term
+
+![copybook summary result demo](media/copybook-summary-demo-2.png)
 
 ---
 
